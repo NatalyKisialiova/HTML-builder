@@ -14,17 +14,13 @@ stdin.on('data', (data) => {
     output.write(data);
   }
 });
-
-process.on('SIGINT', cleanAndExit);
-
 function cleanAndExit() {
-  output.end(() => {
-    fs.unlink(filePath, (err) => {
-      if (err) {
-        console.error('Ошибка при удалении файла:', err);
-      }
-      console.log('Good luck learning Node.js!');
-      process.exit();
-    });
+  fs.unlink(filePath, (err) => {
+    if (err) {
+      console.log('error', err);
+    }
+    stdout.write('Good luck learning Node.js!');
+    process.exit();
   });
 }
+process.on('SIGINT', cleanAndExit);
