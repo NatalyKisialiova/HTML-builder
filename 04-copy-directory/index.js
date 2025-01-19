@@ -43,7 +43,7 @@ function deleteFile(currentFiles) {
       (item) => !currentFileNames.includes(item.name),
     );
     // console.log(result);
-    if (result) {
+    if (result.length !== 0) {
       result.forEach((file) => {
         const deleteFileName = path.join(copyDirPath, file.name);
         fs.unlink(deleteFileName)
