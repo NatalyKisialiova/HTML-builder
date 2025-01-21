@@ -9,7 +9,6 @@ const stylePath = path.join(__dirname, 'proect-dist', 'style.css');
 const assetsCopyPath = path.join(__dirname, 'proect-dist');
 const currentDirPath = path.join(__dirname, 'assets');
 const copyDirPath = path.join(assetsCopyPath, 'assets');
-fsPromise.mkdir(path.join(assetsCopyPath, 'assets'));
 
 fsPromise
   .readdir(path.join(__dirname, 'styles'), { withFileTypes: true })
