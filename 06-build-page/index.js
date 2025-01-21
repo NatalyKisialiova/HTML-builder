@@ -7,6 +7,8 @@ const indexPath = path.join(__dirname, 'proect-dist', 'index.html');
 // const output = require('fs').createWriteStream(indexPath);
 const stylePath = path.join(__dirname, 'proect-dist', 'style.css');
 const assetsCopyPath = path.join(__dirname, 'proect-dist');
+const currentDirPath = path.join(__dirname, 'assets');
+const copyDirPath = path.join(assetsCopyPath, 'assets');
 fsPromise.mkdir(path.join(assetsCopyPath, 'assets'));
 
 fsPromise
@@ -71,3 +73,23 @@ readStreamTemplate.on('data', (chunk) => {
       });
     });
 });
+function copyDirectory(currentDirPath, copyDirPath) {
+  fsPromise
+    .mkdir(copyDirPath, { recursive: true })
+    .then(() => fsPromise.readdir(currentDirPath, { withFileTypes: true }))
+    .then((files) => {
+      files.forEach((file) => {
+        const currentFilePath = path.join(currentDirPath, file.name);
+        const copyFilePath = path.join(copyDirPath, file.name);
+        if (file.isDirectory()) {
+          copyDirectory(currentFilePath, copyFilePath);
+        } else {
+          fsPromise.copyFile(currentFilePath, copyFilePath);
+        }
+      });
+    })
+    .catch((error) => {
+      console.error('Error', error);
+    });
+}
+copyDirectory(currentDirPath, copyDirPath);
